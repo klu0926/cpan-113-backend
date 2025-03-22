@@ -35,7 +35,7 @@ function jwtAuth(req, res, next) {
 router.get('/users/:userId', userController.getUser)
 router.get('/users', userController.getUsers)
 router.post('/users', userController.postUser)
-router.delete('/users', jwtAuth, userController.adminDeleteUser)
+router.delete('/users', jwtAuth, userController.deleteUser)
 // putUser (only user himself can do this)
 
 

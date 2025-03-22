@@ -24,6 +24,7 @@ const userController = {
 
       // return JWT
       const token = jwt.sign({
+        id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -101,18 +102,34 @@ const userController = {
       res.json(apiResponse(false, {}, err.message))
     }
   },
-  // only role: "admin" can delete a user
-  // role: "user" delete use soft delete (not implemented in current scope)
-  adminDeleteUser: async (req, res) => {
+  // Can only use on self
+  putUser: async (req, res) => {
     try {
-      // check if current user is admin
-      if (req.user.role !== 'admin') throw new Error('Only admin can delete user')
 
+
+    } catch (err) {
+      res.json(apiResponse(false, {}, err.message))
+
+    }
+  },
+  // Role: "user", can only delete himself
+  // Role: "admin", can delete anyone but himself
+  deleteUser: async (req, res) => {
+    try {
       const { userId } = req.body
       if (!userId) throw new Error('Missing userId')
 
+      // confirm user data
+      const user = req.user
+      if (!user) throw new Error('Cannot find req.user data')
+      if (!user.id) throw new Error('Cannot find user.id')
+
+      // check is admin or user
+      if (user.role !== 'admin' && Number(user.id) !== Number(userId)) {
+        throw new Error('You cannot delete another user')
+      }
       // Cannot delete admin
-      if (Number(userId) === 1) throw new Error('Cannot delete yourslef, admin')
+      if (Number(userId) === 1) throw new Error('Cannot delete admin')
 
       // delete user
       const deleteRow = await User.destroy({ where: { id: userId } })
