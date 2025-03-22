@@ -115,7 +115,6 @@ const userController = {
     try {
       // check userId
       const { userId, name, data } = req.body
-      console.log('putUser', userId, name, data)
       if (!userId) throw new Error('Missing userId')
 
       // confirm user data
