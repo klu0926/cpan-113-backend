@@ -23,7 +23,12 @@ const userController = {
       if (!isMatch) throw new Error('Email and password do not match')
 
       // return JWT
-      const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: '1h' })
+      const token = jwt.sign({
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      }
+        , SECRET_KEY, { expiresIn: '1h' })
       res.json(apiResponse(true, token, 'Successfully login, return JWT token'))
 
     } catch (err) {
@@ -101,8 +106,7 @@ const userController = {
   adminDeleteUser: async (req, res) => {
     try {
       // check if current user is admin
-      // when authenticating, put JWT user data to req.user
-      // check if is admin here
+      if (req.user.role !== 'admin') throw new Error('Only admin can delete user')
 
       const { userId } = req.body
       if (!userId) throw new Error('Missing userId')
