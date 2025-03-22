@@ -16,6 +16,8 @@ An Express.js-based API for user authentication and management with JWT support.
 - [POST `/users`](#post-users)
 - [PUT `/users`](#put-users-token-required)
 - [DELETE `/users`](#delete-users-token-required)
+- [Setup the Server Locally](#setup-the-server-locally)
+
 
 ## Error Example
 
@@ -265,3 +267,35 @@ userId: 3
   "message": "Successfully delete user with id: 3"
 }
 ```
+<br>
+
+# Setup the Server Locally
+### 1. Install Dependencies
+```bash
+npm -i
+```
+### 2. Set Up Your Local SQL Database
+Setup your local SQL database, and config your database info in the ```config/config.json``` file. 
+
+### 3. Run Database Migrations
+```
+npm run db-migrate
+```
+or if you want to undo migration
+```
+npm run db-migrate-undo
+```
+
+### 4. Seed the Database
+```
+npm run db-seed
+```
+
+### 5. Run the Development Server
+```
+npm run dev
+```
+Your application should now be running at: http://localhost:3000
+
+
+
