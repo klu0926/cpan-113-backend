@@ -34,7 +34,7 @@ function jwtAuth(req, res, next) {
 router.get('/users/:userId', userController.getUser) // Get 1 user
 router.get('/users', userController.getUsers) // Get all users
 router.post('/users', userController.postUser) // Register
-router.put('/users', jwtAuth, userController.postUser) // Edit User
+router.put('/users', jwtAuth, userController.putUser) // Edit User
 router.delete('/users', jwtAuth, userController.deleteUser)
 
 // 404
