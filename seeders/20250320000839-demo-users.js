@@ -20,6 +20,7 @@ module.exports = {
         name: `user${i + 1}`,
         email: `user${i + 1}@gmail.com`,
         password: hashedPassword[i],
+        role: i === 0 ? "admin" : "user", // only 1 admin account
         data: '{}'
       }
       users.push(user)

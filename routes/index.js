@@ -17,13 +17,14 @@ router.post('/login', userController.login)
 router.get('/users/:userId', userController.getUser)
 router.get('/users', userController.getUsers)
 router.post('/users', userController.postUser)
+router.delete('/users', userController.adminDeleteUser)
 
 
 // 404
 // if the pages doesn't exist
 // return something
 router.use((req, res) => {
-  res.status(404).json(apiResponse(false, null, 'Page not found'))
+  res.status(404).json(apiResponse(false, null, 'No API at this URL'))
 })
 
 

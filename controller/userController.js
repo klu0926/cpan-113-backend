@@ -2,6 +2,7 @@ const { User } = require('../models')
 const apiResponse = require('../helper/apiResponse')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { where } = require('sequelize')
 const SECRET_KEY = process.env.JWT_SECRET
 
 const userController = {
@@ -94,8 +95,33 @@ const userController = {
     } catch (err) {
       res.json(apiResponse(false, {}, err.message))
     }
-  }
+  },
+  // only role: "admin" can delete a user
+  // role: "user" delete use soft delete (not implemented in current scope)
+  adminDeleteUser: async (req, res) => {
+    try {
+      // check if current user is admin
+      // when authenticating, put JWT user data to req.user
+      // check if is admin here
 
+      const { userId } = req.body
+      if (!userId) throw new Error('Missing userId')
+
+      // Cannot delete admin
+      if (Number(userId) === 1) throw new Error('Cannot delete yourslef, admin')
+
+      // delete user
+      const deleteRow = await User.destroy({ where: { id: userId } })
+      if (deleteRow === 0) {
+        throw new Error(`No user with id: ${userId}`)
+      }
+
+      // return 
+      res.json(apiResponse(true, {}, `Successfully delete user with id: ${userId}`))
+    } catch (err) {
+      res.json(apiResponse(false, {}, err.message))
+    }
+  }
 }
 
 module.exports = userController
