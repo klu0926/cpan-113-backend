@@ -41,10 +41,10 @@ const userController = {
   getUsers: async (req, res) => {
     try {
       const users = await User.findAll({
-        order: [['name', 'ASC']],
         attributes: {
           exclude: ['password']
         },
+        order: [['id', 'ASC']],
       })
       if (!users) throw new Error('Can not find any users')
 
