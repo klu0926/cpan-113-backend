@@ -25,11 +25,12 @@ const userController = {
       // return JWT
       const token = jwt.sign({
         id: user.id,
-        name: user.name,
         email: user.email,
         role: user.role,
       }
         , SECRET_KEY, { expiresIn: '1h' })
+
+      // return
       res.json(apiResponse(true, token, 'Successfully login, return JWT token'))
 
     } catch (err) {
@@ -40,10 +41,10 @@ const userController = {
   getUsers: async (req, res) => {
     try {
       const users = await User.findAll({
+        order: [['name', 'ASC']],
         attributes: {
-          exclude: ['updatedAt']
+          exclude: ['password']
         },
-        order: [['name', 'ASC']]
       })
       if (!users) throw new Error('Can not find any users')
 
@@ -64,7 +65,7 @@ const userController = {
       const user = await User.findOne({
         where: { id: userId },
         attributes: {
-          exclude: ['updatedAt']
+          exclude: ['password']
         },
       })
       if (!user) throw new Error('Can not find this user')
@@ -96,26 +97,61 @@ const userController = {
       })
 
       if (!user) throw new Error('User can not be created')
+
+      // remove password
+      const json = user.toJSON()
+      delete json.password
+
       // return 
-      res.json(apiResponse(true, user.toJSON(), 'Successfully create user'))
+      res.json(apiResponse(true, json, 'Successfully create user'))
     } catch (err) {
       res.json(apiResponse(false, {}, err.message))
     }
   },
-  // Can only use on self
+  // Role: "user", can only edit himself
+  // Role: "admin", can edit anyone
+  // files: name, data
   putUser: async (req, res) => {
     try {
+      // check userId
+      const { userId, name, data } = req.body
+      console.log('putUser', userId, name, data)
+      if (!userId) throw new Error('Missing userId')
 
+      // confirm user data
+      const user = req.user
+      if (!user) throw new Error('Cannot find req.user data')
+      if (!user.id) throw new Error('Cannot find user.id')
 
+      // check is admin or user
+      if (user.role !== 'admin' && Number(user.id) !== Number(userId)) {
+        throw new Error('You cannot edit another user')
+      }
+
+      // find user in database
+      const userData = await User.findOne({ where: { id: userId } })
+      if (!userData) throw new Error(`Cannot find user data for user id : ${userId}`)
+
+      // update user 
+      if (name) userData.name = name
+      if (data) userData.data = JSON.stringify(data)
+      await userData.save()
+
+      // remove password
+      const json = userData.toJSON()
+      delete json.password
+
+      // return 
+      res.json(apiResponse(true, userData, 'Successfully updated user'))
     } catch (err) {
       res.json(apiResponse(false, {}, err.message))
-
     }
   },
   // Role: "user", can only delete himself
   // Role: "admin", can delete anyone but himself
   deleteUser: async (req, res) => {
     try {
+      // check userId
       const { userId } = req.body
       if (!userId) throw new Error('Missing userId')
 

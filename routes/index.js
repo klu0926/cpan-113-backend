@@ -31,13 +31,11 @@ function jwtAuth(req, res, next) {
   }
 }
 
-
-router.get('/users/:userId', userController.getUser)
-router.get('/users', userController.getUsers)
-router.post('/users', userController.postUser)
+router.get('/users/:userId', userController.getUser) // Get 1 user
+router.get('/users', userController.getUsers) // Get all users
+router.post('/users', userController.postUser) // Register
+router.put('/users', jwtAuth, userController.postUser) // Edit User
 router.delete('/users', jwtAuth, userController.deleteUser)
-// putUser (only user himself can do this)
-
 
 // 404
 // if the pages doesn't exist
