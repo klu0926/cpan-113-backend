@@ -110,7 +110,7 @@ const userController = {
   },
   // Role: "user", can only edit himself
   // Role: "admin", can edit anyone
-  // files: name, data
+  // files: name, data (string)
   putUser: async (req, res) => {
     try {
       // check userId
@@ -134,7 +134,7 @@ const userController = {
 
       // update user 
       if (name) userData.name = name
-      if (data) userData.data = JSON.stringify(data)
+      if (data) userData.data = data
       await userData.save()
 
       // remove password
