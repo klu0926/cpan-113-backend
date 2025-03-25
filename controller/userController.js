@@ -2,7 +2,6 @@ const { User } = require('../models')
 const apiResponse = require('../helper/apiResponse')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { where } = require('sequelize')
 const SECRET_KEY = process.env.JWT_SECRET
 
 const userController = {

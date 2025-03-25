@@ -1,14 +1,17 @@
 const path = require('path')
 const router = require('express').Router()
 const userController = require('../controller/userController')
+const scoreController = require('../controller/scoreController')
 const apiResponse = require('../helper/apiResponse')
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = process.env.JWT_SECRET
 
-
+// INDEX
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
+
+// USER
 // Login, and return JWT
 router.post('/login', userController.login)
 
@@ -36,6 +39,9 @@ router.get('/users', userController.getUsers) // Get all users
 router.post('/users', userController.postUser) // Register
 router.put('/users', jwtAuth, userController.putUser) // Edit User
 router.delete('/users', jwtAuth, userController.deleteUser)
+
+// SCORE
+router.get('/scores', scoreController.getScores);
 
 // 404
 // if the pages doesn't exist

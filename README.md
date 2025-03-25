@@ -34,6 +34,56 @@ If anything goes wrong, most of them will response will an error like this
 
 Serves the static `index.html` file, currently for testing purpose.
 
+## GET `/scores`
+
+### Purpose
+
+Fetch all scores in the system. Can use search query to get different data. Query is optional.
+
+### Query
+- userId
+- level
+- difficulty
+- speed
+- language
+- order (default 'DESC')
+- count (number of scores, default return all)
+
+### Example Request
+
+GET /scores
+GET /scores?limit=10
+GET /scores?limit=10&language=javascript
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 7,
+      "userId": 1,
+      "point": 1000,
+      "level": "2",
+      "difficulty": "3",
+      "language": "JavaScript",
+      "data": ""
+    },
+    {
+      "id": 279,
+      "userId": 6,
+      "point": 1000,
+      "level": "1",
+      "difficulty": "3",
+      "language": "Python",
+      "data": ""
+    }
+  ],
+  "message": "Successfully get all users"
+}
+```
+
 ## GET `/users`
 
 ### Purpose
