@@ -51,9 +51,9 @@ Fetch all scores in the system. Can use search query to get different data. Quer
 
 ### Example Request
 
-GET /scores
-GET /scores?limit=10
-GET /scores?limit=10&language=javascript
+- GET /scores
+- GET /scores?limit=10
+- GET /scores?limit=10&language=javascript
 
 ### Example Response
 
