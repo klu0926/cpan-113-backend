@@ -9,8 +9,14 @@ An Express.js-based API for user authentication and management with JWT support.
 
 ## Endpoint
 
-- [GET `/`](#get-)
+### Score
+
 - [GET `/scores`](#get-scores)
+- [POST `/scores`](#post-scores)
+- [DELETE `/scores`](#delete-scores-token-required)
+
+### User
+
 - [GET `/users`](#get-users)
 - [GET `/users/:userId`](#get-usersuserid)
 - [POST `/login`](#post-login)
@@ -30,10 +36,6 @@ If anything goes wrong, most of them will response will an error like this
   "message": "Something went wrong or invalid input"
 }
 ```
-
-## GET `/`
-
-Serves the static `index.html` file, currently for testing purpose.
 
 ## GET `/scores`
 
@@ -84,6 +86,89 @@ Fetch all scores in the system. Can use search query to get different data. Quer
   ],
   "message": "Successfully get all users"
 }
+```
+
+## POST `/scores`
+
+### Purpose
+
+Create a new score record.
+
+### Parameters
+
+Sent as `x-www-form-urlencoded`:
+
+- userId (required)
+- point (required)
+- level
+- difficulty
+- speed
+- language
+
+### Example Request
+
+POST /scores
+
+```
+userId : 1
+point : 1000
+level : 1
+difficulty : 3
+speed: 1
+language : javascript
+```
+
+### Example Response
+
+```json
+{
+  "ok": true,
+  "data": {
+    "id": 503,
+    "userId": "1",
+    "point": "1000",
+    "level": "1",
+    "difficulty": "3",
+    "language": "javascript",
+    "data": "",
+    "updatedAt": "2025-03-25T02:21:51.250Z",
+    "createdAt": "2025-03-25T02:21:51.250Z"
+  },
+  "message": "Successfully create new score"
+}
+```
+
+## DELETE `/scores` (Token Required)
+
+### Purpose
+
+Delete a score by ID. Requires JWT authentication.
+
+- Regular users cannot delete score
+- Admins can delete any score
+
+### Headers
+
+- `Authorization: Bearer <JWT_TOKEN>`
+
+### Parameters
+
+Sent as `x-www-form-urlencoded` in the request body:
+
+- `scoreId` (required)
+
+### Example Request
+
+DELETE /scores
+
+```
+scoreId: 3
+```
+
+### Example Response
+
+```json
+{ "ok": true, "data": {}, "message": "Successfully deleted score with id: 3" }
 ```
 
 ## GET `/users`
