@@ -5,11 +5,12 @@ An Express.js-based API for user authentication and management with JWT support.
 ## Base URL
 
 - local : http://localhost:3000
-- heroku : https://type-defender-699bdc11f4d9.herokuapp.com/users
+- heroku : https://type-defender-699bdc11f4d9.herokuapp.com
 
 ## Endpoint
 
 - [GET `/`](#get-)
+- [GET `/scores`](#get-scores)
 - [GET `/users`](#get-users)
 - [GET `/users/:userId`](#get-usersuserid)
 - [POST `/login`](#post-login)
@@ -41,6 +42,7 @@ Serves the static `index.html` file, currently for testing purpose.
 Fetch all scores in the system. Can use search query to get different data. Query is optional.
 
 ### Query
+
 - userId
 - level
 - difficulty
