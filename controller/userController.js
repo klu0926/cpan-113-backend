@@ -15,7 +15,7 @@ const userController = {
       const user = await User.findOne({
         where: { email },
       })
-      if (!user) throw new Error('Can not find user with this email')
+      if (!user) throw new Error('Cannot find user with this email')
 
       // check password
       const isMatch = await bcrypt.compare(password, user.password)
@@ -45,7 +45,7 @@ const userController = {
         },
         order: [['id', 'ASC']],
       })
-      if (!users) throw new Error('Can not find any users')
+      if (!users) throw new Error('Cannot find any users')
 
       // convert to JSON
       const userJSON = users.map(user => {
@@ -67,7 +67,7 @@ const userController = {
           exclude: ['password']
         },
       })
-      if (!user) throw new Error('Can not find this user')
+      if (!user) throw new Error('Cannot find this user')
 
       res.json(apiResponse(true, user.toJSON(), 'Successfully get user'))
 
@@ -95,7 +95,7 @@ const userController = {
         data: '{}'
       })
 
-      if (!user) throw new Error('User can not be created')
+      if (!user) throw new Error('User cannot be created')
 
       // remove password
       const json = user.toJSON()

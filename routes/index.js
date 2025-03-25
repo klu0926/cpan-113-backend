@@ -42,6 +42,9 @@ router.delete('/users', jwtAuth, userController.deleteUser)
 
 // SCORE
 router.get('/scores', scoreController.getScores);
+router.post('/scores', scoreController.postScore);
+router.delete('/scores', jwtAuth, scoreController.deleteScore);
+
 
 // 404
 // if the pages doesn't exist
